@@ -41,6 +41,7 @@ public:
     QPushButton *exitButton;
     QStatusBar *statusBar;
 
+    // test
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
