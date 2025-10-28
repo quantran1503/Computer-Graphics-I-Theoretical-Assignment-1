@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\mocs_compilation_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\openglview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\trianglemesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\mocs_compilation_Release.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\mocs_compilation_MinSizeRel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\mocs_compilation_RelWithDebInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\mainwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\openglview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\trianglemesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\vec3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\include_Debug\ui_mainwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\include_Release\ui_mainwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\include_MinSizeRel\ui_mainwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\include_RelWithDebInfo\ui_mainwindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\CMakeFiles\3cd77e08970e46eaae37056bac11ca15\autouic_(CONFIG).stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\mainwindow.ui" />
+    <None Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\autouic_Debug.stamp" />
+    <None Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\autouic_Release.stamp" />
+    <None Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\autouic_MinSizeRel.stamp" />
+    <None Include="C:\Users\anhqu\Documents\Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window\build\uebung_01_autogen\autouic_RelWithDebInfo.stamp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{F4F25743-79C4-37C3-8E81-075E88870E54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8E35118C-57A8-346F-86D0-B7B1339289BA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{388B375C-9FED-3C7F-A538-16CBB23349B1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+C:/Users/anhqu/Documents/Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window/build/CMakeFiles/uebung_01.dir
+C:/Users/anhqu/Documents/Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/anhqu/Documents/Framework_OpenGL_OBJ_LSA_Qt6_Legacy_Window/build/CMakeFiles/ZERO_CHECK.dir
