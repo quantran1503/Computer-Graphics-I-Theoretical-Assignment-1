@@ -362,5 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# build folder
+# build and Modelle folders
 build/
+Modelle/
