@@ -111,8 +111,27 @@ void TriangleMesh::loadOBJ(const char *filename)
     triangles.resize(0);
 
     // read vertices and triangles
-    // TODO: 1) read all vertices and triangles from the file
+    // 1) read all vertices and triangles from the file
     // You can ignore all other information in the file
+    FILE *file = fopen(filename, "r");
+    while (true) {
+        char lineHeader[128];
+        // read the first word of the line
+        int res = fscanf(file, "%s", lineHeader);
+        if (res == EOF)
+            break; // EOF = End Of File. Quit the loop.
+
+        if (strcmp(lineHeader, "v") == 0) {
+            Vec3f vertex;
+            fscanf(file, "%f %f %f\n", &vertex.x(), &vertex.y(), &vertex.z());
+            vertices.push_back(vertex);
+        } else if (strcmp(lineHeader, "f") == 0) {
+            Vec3i triangle;
+            fscanf(file, "%d %d %d\n", &triangle.x(), &triangle.y(), &triangle.z());
+            triangles.push_back(triangle);
+        }
+    }
+    fclose(file);
 
     // calculate normals
     calculateNormals();
@@ -127,5 +146,11 @@ void TriangleMesh::draw(QOpenGLFunctions_2_1 *f)
     if (triangles.empty())
         return;
 
-    // TODO: 3) draw triangles with immediate mode
+    // 3) draw triangles with immediate mode
+    f->glBegin(GL_TRIANGLES);
+    // render objects as white for now 
+    f->glColor3f(1.f, 1.f, 1.f);
+    foreach (Vertex vertex, vertices)
+        f->glVertex3f(vertex.x(), vertex.y(), vertex.z());
+    f->glEnd();
 }
