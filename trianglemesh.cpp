@@ -93,7 +93,36 @@ void TriangleMesh::loadLSA(const char *filename)
     // read vertices and triangles
     // TODO: 2) read alpha, beta, gamma for each vertex and calculate vertex coordinates
     // TODO: 2) read all triangles from the file
+    
+    std::string line;
+    while (std::getline(in, line)) {
+        if (line.empty() || line[0] == '#')
+            continue;
+    }
+    char type;
+    float a, b, g;
+    if (line[0] == 'b') {
+        sscanf(line.c_str(), "b %f", &baseline);
+    }
+    if (line[0] == 'v') {
+        sscanf(line.c_str(), "v %f %f %f", &a, &b, &g);
+        //convert deg to rad
+        float alpha = a * DEG_TO_RAD;
+        float beta = b * DEG_TO_RAD;
+        float gamma = g * DEG_TO_RAD;
 
+        //calculate the angle to coordinate
+        float x = baseline + cos(beta) * sin(alpha);
+        float y = sin(gamma);
+        float z = -cos(beta) * cos(alpha);
+
+        vertices.emplace_back(x, y, z);
+    }
+    if (line[0] == 'f') {
+        int i1, i2, i3;
+        sscanf(line.c_str(), "f %d %d %d", &i1, &i2, &i3);
+        triangles.emplace_back(i1 - 1, i2 - 1, i3 - 1);
+    }
     // calculate normals
     calculateNormals();
 }
