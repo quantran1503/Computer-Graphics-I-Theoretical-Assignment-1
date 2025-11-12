@@ -24,6 +24,60 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
     normals.clear();
     normals.resize(vertices.size());
     // TODO: 4a) calculate normals for each vertex
+    if (weightByAngle == false) {
+        for (int i = 0; i < triangles.size(); i++) {
+            Vec3f v_one = vertices[triangles[i].x()];
+            Vec3f v_two = vertices[triangles[i].y()];
+            Vec3f v_three = vertices[triangles[i].z()];
+
+            Vec3f e_one = v_two - v_one;
+            Vec3f e_two = v_two - v_three;
+
+            Vec3<float> normal = cross(e_one, e_two);
+
+            normals[triangles[i].x()] += normal;
+            normals[triangles[i].y()] += normal;
+            normals[triangles[i].z()] += normal;
+        }
+
+        for (int i = 0; i < normals.size(); i++) {
+            normals[i] = normals[i].normalized(); // Or normalize() ?
+        }
+    }
+
+    else {
+        for (int i = 0; i < triangles.size(); i++) {
+            Vec3f v_one = vertices[triangles[i].x()];
+            Vec3f v_two = vertices[triangles[i].y()];
+            Vec3f v_three = vertices[triangles[i].z()];
+
+            Vec3f e_one = v_two - v_one;
+            Vec3f e_two = v_two - v_three;
+            Vec3f e_three = v_one - v_three;
+
+            Vec3f e_one_norm = e_one.normalized();
+            Vec3f e_two_norm = e_two.normalized();  // Or normalize() ?
+            Vec3f e_three_norm = e_three.normalized();
+
+            float dot_one = e_one_norm * e_two_norm;
+            float dot_two = e_two_norm * e_three_norm;
+            float dot_three = e_one_norm * e_three_norm;
+
+            float angle_one = acos(dot_one);
+            float angle_two = acos(dot_two);
+            float angle_three = acos(dot_three);
+
+            Vec3<float> normal = cross(e_one, e_two);
+
+            normals[triangles[i].x()] += normal * angle_three;
+            normals[triangles[i].y()] += normal * angle_one;
+            normals[triangles[i].z()] += normal * angle_two;
+        }
+
+        for (int i = 0; i < normals.size(); i++) {
+            normals[i] = normals[i].normalized(); // Or normalize() ?
+        }
+    }
     // TODO: 4b) weight normals by angle if weightByAngle is true
 
     for (auto &normal : normals) {
@@ -129,7 +183,7 @@ void TriangleMesh::loadLSA(const char *filename)
 
 
 void TriangleMesh::loadOBJ(const char *filename)
-{
+{ 
     std::ifstream in(filename);
     if (!in.is_open()) {
         cout << "loadOBJ: can not find " << filename << endl;
