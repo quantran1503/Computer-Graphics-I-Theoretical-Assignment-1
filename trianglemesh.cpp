@@ -80,7 +80,7 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
         }
     }
     // TODO: 4b) weight normals by angle if weightByAngle is true
-
+    
     for (auto &normal : normals) {
         // the normalize() function returns a boolean which can be used if you want to check for
         // erroneous normals
@@ -146,38 +146,43 @@ void TriangleMesh::loadLSA(const char *filename)
     vertices.resize(0);
     triangles.resize(0);
     // read vertices and triangles
-    // TODO: 2) read alpha, beta, gamma for each vertex and calculate vertex coordinates
-    // TODO: 2) read all triangles from the file
-    
-    std::string line;
-    while (std::getline(in, line)) {
-        if (line.empty() || line[0] == '#')
+    // 2) read alpha, beta, gamma for each vertex and calculate vertex coordinates
+    // 2) read all triangles from the file
+    string line;
+    while (getline(in, line)) {
+        if (line.empty())
             continue;
+
+        istringstream iss(line);
+        string lineHeader;
+        iss >> lineHeader;
+
+        if (lineHeader == "b") {
+            iss >> baseline;
+        } else if (lineHeader == "v") {
+            float a, b, g;
+            iss >> a >> b >> g;
+
+             // convert deg to rad
+            float alpha = a * DEG_TO_RAD;
+            float beta = b * DEG_TO_RAD;
+            float gamma = g * DEG_TO_RAD;
+
+            // calculate the angle to coordinate
+            // formulas for z and x are in Theoretical Assignment 1 task 3
+            float z = baseline / (tan(alpha) + tan(beta));
+            float x = tan(beta) * z;
+            // gamma is located between the laser ray and the XZ plane similar to beta for x
+            float y = tan(gamma) * z;
+
+            vertices.emplace_back(x, y, z);
+        } else if (lineHeader == "f") {
+            Vec3i triangle;
+            iss >> triangle.x() >> triangle.y() >> triangle.z();
+            triangles.push_back(triangle);
+        }
     }
-    char type;
-    float a, b, g;
-    if (line[0] == 'b') {
-        sscanf(line.c_str(), "b %f", &baseline);
-    }
-    if (line[0] == 'v') {
-        sscanf(line.c_str(), "v %f %f %f", &a, &b, &g);
-        //convert deg to rad
-        float alpha = a * DEG_TO_RAD;
-        float beta = b * DEG_TO_RAD;
-        float gamma = g * DEG_TO_RAD;
-    
-        //calculate the angle to coordinate
-        float x = baseline + cos(beta) * sin(alpha);
-        float y = sin(gamma);
-        float z = -cos(beta) * cos(alpha);
-    
-        vertices.emplace_back(x, y, z);
-    }
-    if (line[0] == 'f') {
-        int i1, i2, i3;
-        sscanf(line.c_str(), "f %d %d %d", &i1, &i2, &i3);
-        triangles.emplace_back(i1 - 1, i2 - 1, i3 - 1);
-    }
+
     // calculate normals
     calculateNormals();
 }

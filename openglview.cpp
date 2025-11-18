@@ -26,7 +26,9 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
     balloonMesh.loadLSA("../Modelle/ballon.lsa");
 
     brachMesh.loadOBJ("../Modelle/brach.obj");
+    // brachMesh.loadLSA("../Modelle/brach.lsa");
     fordMesh.loadOBJ("../Modelle/83ford-gt90.obj");
+    // fordMesh.loadLSA("../Modelle/83ford-gt90.lsa");
     delphinMesh.loadOBJ("../Modelle/delphin.obj");
 
     // Load the sphere of the light
@@ -196,7 +198,7 @@ unsigned int OpenGLView::getTriangleCount(int n) const
 void OpenGLView::setDefaults()
 {
     // scene Information
-    centerPos = Vec3f(1.0f, -2.0f, -5.0f);
+    centerPos = Vec3f(1.0f, -2.0f, -25.0f);
     angleX = 0.0f;
     angleY = 0.0f;
 
