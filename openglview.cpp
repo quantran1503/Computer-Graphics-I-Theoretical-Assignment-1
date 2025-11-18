@@ -22,8 +22,8 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
     setDefaults();
 
     // Load balloon mesh
-    balloonMesh.loadOBJ("../Modelle/ballon.obj");
-    // balloonMesh.loadLSA("../Modelle/ballon.lsa");
+    // balloonMesh.loadOBJ("../Modelle/ballon.obj");
+    balloonMesh.loadLSA("../Modelle/ballon.lsa");
 
     brachMesh.loadOBJ("../Modelle/brach.obj");
     fordMesh.loadOBJ("../Modelle/83ford-gt90.obj");
@@ -123,6 +123,8 @@ void OpenGLView::paintGL()
 
     list<TriangleMesh> meshes = {balloonMesh, brachMesh, delphinMesh, fordMesh};
     float x = 0, y = 0;
+    int n = 1;
+    for (int i = 0; i < n; i++)
     for (TriangleMesh mesh : meshes) {
         f->glPushMatrix();
         // affine transformations must be outside glBegin immediate mode
@@ -135,14 +137,11 @@ void OpenGLView::paintGL()
         f->glPopMatrix();
     }
 
-    // drawCubeManual();
-    // drawCubeImmediate();
-
     ++frameCounter;
     update();
 
     // Emit the triangle count to be shown in the UI.
-    emit triangleCountChanged(getTriangleCount());
+    emit triangleCountChanged(getTriangleCount(n));
 }
 
 void OpenGLView::drawCS()
@@ -185,10 +184,13 @@ void OpenGLView::moveLight()
     lightPos.rotY(lightMotionSpeed * (deltaTimer.restart() / 1000.f));
 }
 
-unsigned int OpenGLView::getTriangleCount() const
+unsigned int OpenGLView::getTriangleCount(int n) const
 {
-    // TODO: Needs to be updated for multiple rendered meshes.
-    return balloonMesh.getTriangles().size() + sphereMesh.getTriangles().size();
+    return n * (balloonMesh.getTriangles().size() + 
+        brachMesh.getTriangles().size() + 
+        delphinMesh.getTriangles().size() + 
+        fordMesh.getTriangles().size() + 
+        sphereMesh.getTriangles().size());
 }
 
 void OpenGLView::setDefaults()

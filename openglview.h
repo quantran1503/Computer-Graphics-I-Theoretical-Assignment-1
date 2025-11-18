@@ -75,7 +75,7 @@ private:
     void drawCS();
     void drawLight();
     void moveLight();
-    unsigned int getTriangleCount() const;
+    unsigned int getTriangleCount(int n) const;
 };
 
 #endif // OPENGLVIEW_H
