@@ -10,6 +10,7 @@
 // ========================================================================= //
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <cfloat>
 
@@ -29,51 +30,51 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
             Vec3f v_one = vertices[triangles[i].x()];
             Vec3f v_two = vertices[triangles[i].y()];
             Vec3f v_three = vertices[triangles[i].z()];
-
+    
             Vec3f e_one = v_two - v_one;
             Vec3f e_two = v_two - v_three;
-
+    
             Vec3<float> normal = cross(e_one, e_two);
-
+    
             normals[triangles[i].x()] += normal;
             normals[triangles[i].y()] += normal;
             normals[triangles[i].z()] += normal;
         }
-
+    
         for (int i = 0; i < normals.size(); i++) {
             normals[i] = normals[i].normalized(); // Or normalize() ?
         }
     }
-
+    
     else {
         for (int i = 0; i < triangles.size(); i++) {
             Vec3f v_one = vertices[triangles[i].x()];
             Vec3f v_two = vertices[triangles[i].y()];
             Vec3f v_three = vertices[triangles[i].z()];
-
+    
             Vec3f e_one = v_two - v_one;
             Vec3f e_two = v_two - v_three;
             Vec3f e_three = v_one - v_three;
-
+    
             Vec3f e_one_norm = e_one.normalized();
             Vec3f e_two_norm = e_two.normalized();  // Or normalize() ?
             Vec3f e_three_norm = e_three.normalized();
-
+    
             float dot_one = e_one_norm * e_two_norm;
             float dot_two = e_two_norm * e_three_norm;
             float dot_three = e_one_norm * e_three_norm;
-
+    
             float angle_one = acos(dot_one);
             float angle_two = acos(dot_two);
             float angle_three = acos(dot_three);
-
+    
             Vec3<float> normal = cross(e_one, e_two);
-
+    
             normals[triangles[i].x()] += normal * angle_three;
             normals[triangles[i].y()] += normal * angle_one;
             normals[triangles[i].z()] += normal * angle_two;
         }
-
+    
         for (int i = 0; i < normals.size(); i++) {
             normals[i] = normals[i].normalized(); // Or normalize() ?
         }
@@ -164,12 +165,12 @@ void TriangleMesh::loadLSA(const char *filename)
         float alpha = a * DEG_TO_RAD;
         float beta = b * DEG_TO_RAD;
         float gamma = g * DEG_TO_RAD;
-
+    
         //calculate the angle to coordinate
         float x = baseline + cos(beta) * sin(alpha);
         float y = sin(gamma);
         float z = -cos(beta) * cos(alpha);
-
+    
         vertices.emplace_back(x, y, z);
     }
     if (line[0] == 'f') {
@@ -196,25 +197,25 @@ void TriangleMesh::loadOBJ(const char *filename)
     // read vertices and triangles
     // 1) read all vertices and triangles from the file
     // You can ignore all other information in the file
-    FILE *file = fopen(filename, "r");
-    while (true) {
-        char lineHeader[128];
-        // read the first word of the line
-        int res = fscanf(file, "%s", lineHeader);
-        if (res == EOF)
-            break; // EOF = End Of File. Quit the loop.
+    string line;
+    while (getline(in, line)) {
+        if (line.empty())
+            continue;
 
-        if (strcmp(lineHeader, "v") == 0) {
+        istringstream iss(line);
+        string lineHeader;
+        iss >> lineHeader;
+
+        if (lineHeader == "v") {
             Vec3f vertex;
-            fscanf(file, "%f %f %f\n", &vertex.x(), &vertex.y(), &vertex.z());
+            iss >> vertex.x() >> vertex.y() >> vertex.z();
             vertices.push_back(vertex);
-        } else if (strcmp(lineHeader, "f") == 0) {
+        } else if (lineHeader == "f") {
             Vec3i triangle;
-            fscanf(file, "%d %d %d\n", &triangle.x(), &triangle.y(), &triangle.z());
+            iss >> triangle.x() >> triangle.y() >> triangle.z();
             triangles.push_back(triangle);
         }
     }
-    fclose(file);
 
     // calculate normals
     calculateNormals();
@@ -231,8 +232,6 @@ void TriangleMesh::draw(QOpenGLFunctions_2_1 *f)
 
     // 3) draw triangles with immediate mode
     f->glBegin(GL_TRIANGLES);
-    // render objects as white for now 
-    f->glColor3f(1.f, 1.f, 1.f);
     foreach (Vertex vertex, vertices)
         f->glVertex3f(vertex.x(), vertex.y(), vertex.z());
     f->glEnd();

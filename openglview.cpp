@@ -114,7 +114,8 @@ void OpenGLView::paintGL()
 
     // draw object
     f->glEnable(GL_LIGHTING);
-    f->glColor3f(1.f, 0.1f, 0.1f);
+    // render triMesh with white color
+    f->glColor3f(1.f, 1.f, 1.f);
     f->glPushMatrix();
     f->glTranslatef(1.0f, 1.0f, 1.0f);
     triMesh.draw(f);
