@@ -56,7 +56,10 @@ private:
     float lightMotionSpeed;
 
     // rendered objects
-    TriangleMesh triMesh;
+    TriangleMesh balloonMesh;
+    TriangleMesh brachMesh;
+    TriangleMesh fordMesh;
+    TriangleMesh delphinMesh;
     TriangleMesh sphereMesh;
 
     // FPS counter, needed for FPS calculation

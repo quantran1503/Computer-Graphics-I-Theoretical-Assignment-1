@@ -21,9 +21,13 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
 {
     setDefaults();
 
-    // Load ballon mesh
-    triMesh.loadOBJ("../Modelle/ballon.obj");
-    // triMesh.loadLSA("../Modelle/delphin.lsa");
+    // Load balloon mesh
+    balloonMesh.loadOBJ("../Modelle/ballon.obj");
+    // balloonMesh.loadLSA("../Modelle/ballon.lsa");
+
+    brachMesh.loadOBJ("../Modelle/brach.obj");
+    fordMesh.loadOBJ("../Modelle/83ford-gt90.obj");
+    delphinMesh.loadOBJ("../Modelle/delphin.obj");
 
     // Load the sphere of the light
     sphereMesh.loadOBJ("../Modelle/sphere.obj");
@@ -114,12 +118,26 @@ void OpenGLView::paintGL()
 
     // draw object
     f->glEnable(GL_LIGHTING);
-    // render triMesh with white color
+    // render all meshes white for now 
     f->glColor3f(1.f, 1.f, 1.f);
-    f->glPushMatrix();
-    f->glTranslatef(1.0f, 1.0f, 1.0f);
-    triMesh.draw(f);
-    f->glPopMatrix();
+
+    list<TriangleMesh> meshes = {balloonMesh, brachMesh, delphinMesh, fordMesh};
+    float x = 0, y = 0;
+    for (TriangleMesh mesh : meshes) {
+        f->glPushMatrix();
+        // affine transformations must be outside glBegin immediate mode
+        // f->glRotatef(180, 0.0f, 1.0f, 0.0f);
+        f->glTranslatef(x, y, 0);
+        x += 4.f;
+        y += 4.f;
+        // f->glScalef(2.0f, 2.0f, 2.0f);
+        mesh.draw(f);
+        f->glPopMatrix();
+    }
+
+    // drawCubeManual();
+    // drawCubeImmediate();
+
     ++frameCounter;
     update();
 
@@ -133,15 +151,15 @@ void OpenGLView::drawCS()
     // red X
     f->glColor3f(1.f, 0.f, 0.f);
     f->glVertex3f(0.f, 0.f, 0.f);
-    f->glVertex3f(5.f, 0.f, 0.f);
+    f->glVertex3f(10.f, 0.f, 0.f);
     // green Y
     f->glColor3f(0.f, 1.f, 0.f);
     f->glVertex3f(0.f, 0.f, 0.f);
-    f->glVertex3f(0.f, 5.f, 0.f);
+    f->glVertex3f(0.f, 10.f, 0.f);
     // blue Z
     f->glColor3f(0.f, 0.f, 1.f);
     f->glVertex3f(0.f, 0.f, 0.f);
-    f->glVertex3f(0.f, 0.f, 5.f);
+    f->glVertex3f(0.f, 0.f, 10.f);
     f->glEnd();
 }
 
@@ -153,8 +171,10 @@ void OpenGLView::drawLight()
 
     // draw yellow sphere for light source
     f->glPushMatrix();
+
     f->glTranslatef(lp[0], lp[1], lp[2]);
-    f->glScalef(0.3f, 0.3f, 0.3f);
+    // f->glScalef(0.3f, 0.3f, 0.3f);
+    f->glScalef(2.f, 2.f, 2.f);
     f->glColor3f(1, 1, 0);
     sphereMesh.draw(f);
     f->glPopMatrix();
@@ -168,7 +188,7 @@ void OpenGLView::moveLight()
 unsigned int OpenGLView::getTriangleCount() const
 {
     // TODO: Needs to be updated for multiple rendered meshes.
-    return triMesh.getTriangles().size() + sphereMesh.getTriangles().size();
+    return balloonMesh.getTriangles().size() + sphereMesh.getTriangles().size();
 }
 
 void OpenGLView::setDefaults()
@@ -177,6 +197,7 @@ void OpenGLView::setDefaults()
     centerPos = Vec3f(1.0f, -2.0f, -5.0f);
     angleX = 0.0f;
     angleY = 0.0f;
+
     // light information
     lightPos = Vec3f(-10.0f, 0.0f, 0.0f);
     lightMotionSpeed = 80.0f;
@@ -190,7 +211,7 @@ void OpenGLView::refreshFpsCounter()
 
 void OpenGLView::recalcNormals(bool weightByAngle)
 {
-    triMesh.calculateNormals(weightByAngle);
+    balloonMesh.calculateNormals(weightByAngle);
     update();
 }
 
