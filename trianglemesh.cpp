@@ -32,17 +32,13 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
             Vec3f v_three = vertices[triangles[i].z()];
     
             Vec3f e_one = v_two - v_one;
-            Vec3f e_two = v_two - v_three;
+            Vec3f e_two = v_three - v_one;
     
-            Vec3<float> normal = cross(e_one, e_two);
+            Vec3<float> normal = cross(e_two, e_one);
     
             normals[triangles[i].x()] += normal;
             normals[triangles[i].y()] += normal;
             normals[triangles[i].z()] += normal;
-        }
-    
-        for (int i = 0; i < normals.size(); i++) {
-            normals[i] = normals[i].normalized(); // Or normalize() ?
         }
     }
     // 4b) weight normals by angle if weightByAngle is true
@@ -75,16 +71,15 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
             normals[triangles[i].z()] += normal * angle_two;
         }
     
-        for (int i = 0; i < normals.size(); i++) {
-            normals[i] = normals[i].normalized(); // Or normalize() ?
-        }
     }
     
     for (auto &normal : normals) {
         // the normalize() function returns a boolean which can be used if you want to check for
         // erroneous normals
+        
         normal.normalize();
     }
+
 }
 
 // ================
@@ -245,14 +240,24 @@ void TriangleMesh::draw(QOpenGLFunctions_2_1 *f)
     // 3) draw triangles with immediate mode
     f->glBegin(GL_TRIANGLES);
     for (Triangle triangle : triangles) {
+        Normal n1 = normals[triangle.x()];
+        Normal n2 = normals[triangle.y()];
+        Normal n3 = normals[triangle.z()];
+
         // get 3 vertices of a triangle
         Vertex v1 = vertices[triangle.x()];
         Vertex v2 = vertices[triangle.y()];
         Vertex v3 = vertices[triangle.z()];
 
-        // draw a triangle using 3 vertices 
+        // draw a triangle using 3 vertices
+        // normal must be specified before the vertex
+        f->glNormal3f(n1.x(), n1.y(), n1.z());
         f->glVertex3f(v1.x(), v1.y(), v1.z());
+
+        f->glNormal3f(n2.x(), n2.y(), n2.z());
         f->glVertex3f(v2.x(), v2.y(), v2.z());
+
+        f->glNormal3f(n3.x(), n3.y(), n3.z());
         f->glVertex3f(v3.x(), v3.y(), v3.z());
     }
     // foreach (Vertex vertex, vertices)
