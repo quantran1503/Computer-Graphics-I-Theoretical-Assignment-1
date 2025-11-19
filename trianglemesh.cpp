@@ -79,8 +79,8 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
             normals[i] = normals[i].normalized(); // Or normalize() ?
         }
     }
-    // TODO: 4b) weight normals by angle if weightByAngle is true
     
+    // TODO: 4b) weight normals by angle if weightByAngle is true
     for (auto &normal : normals) {
         // the normalize() function returns a boolean which can be used if you want to check for
         // erroneous normals
@@ -177,9 +177,13 @@ void TriangleMesh::loadLSA(const char *filename)
 
             vertices.emplace_back(x, y, z);
         } else if (lineHeader == "f") {
-            Vec3i triangle;
-            iss >> triangle.x() >> triangle.y() >> triangle.z();
-            triangles.push_back(triangle);
+            // Vec3i triangle;
+            // iss >> triangle.x() >> triangle.y() >> triangle.z();
+            // triangles.push_back(triangle);
+
+            int a, b, c;
+            iss >> a >> b >> c;
+            triangles.emplace_back(a - 1, b - 1, c - 1);
         }
     }
 
@@ -216,9 +220,13 @@ void TriangleMesh::loadOBJ(const char *filename)
             iss >> vertex.x() >> vertex.y() >> vertex.z();
             vertices.push_back(vertex);
         } else if (lineHeader == "f") {
-            Vec3i triangle;
-            iss >> triangle.x() >> triangle.y() >> triangle.z();
-            triangles.push_back(triangle);
+            // Vec3i triangle;
+            // iss >> triangle.x() >> triangle.y() >> triangle.z();
+            // triangles.push_back(triangle);
+
+            int a, b, c;
+            iss >> a >> b >> c;
+            triangles.emplace_back(a - 1, b - 1, c - 1);
         }
     }
 
@@ -237,7 +245,18 @@ void TriangleMesh::draw(QOpenGLFunctions_2_1 *f)
 
     // 3) draw triangles with immediate mode
     f->glBegin(GL_TRIANGLES);
-    foreach (Vertex vertex, vertices)
-        f->glVertex3f(vertex.x(), vertex.y(), vertex.z());
+    for (Triangle triangle : triangles) {
+        // get 3 vertices of a triangle
+        Vertex v1 = vertices[triangle.x()];
+        Vertex v2 = vertices[triangle.y()];
+        Vertex v3 = vertices[triangle.z()];
+
+        // draw a triangle using 3 vertices 
+        f->glVertex3f(v1.x(), v1.y(), v1.z());
+        f->glVertex3f(v2.x(), v2.y(), v2.z());
+        f->glVertex3f(v3.x(), v3.y(), v3.z());
+    }
+    // foreach (Vertex vertex, vertices)
+    //     f->glVertex3f(vertex.x(), vertex.y(), vertex.z());
     f->glEnd();
 }

@@ -22,8 +22,8 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
     setDefaults();
 
     // Load balloon mesh
-    // balloonMesh.loadOBJ("../Modelle/ballon.obj");
-    balloonMesh.loadLSA("../Modelle/ballon.lsa");
+    balloonMesh.loadOBJ("../Modelle/ballon.obj");
+    // balloonMesh.loadLSA("../Modelle/ballon.lsa");
 
     brachMesh.loadOBJ("../Modelle/brach.obj");
     // brachMesh.loadLSA("../Modelle/brach.lsa");
