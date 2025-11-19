@@ -24,7 +24,7 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
 {
     normals.clear();
     normals.resize(vertices.size());
-    // TODO: 4a) calculate normals for each vertex
+    // 4a) calculate normals for each vertex
     if (weightByAngle == false) {
         for (int i = 0; i < triangles.size(); i++) {
             Vec3f v_one = vertices[triangles[i].x()];
@@ -45,7 +45,7 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
             normals[i] = normals[i].normalized(); // Or normalize() ?
         }
     }
-    
+    // 4b) weight normals by angle if weightByAngle is true
     else {
         for (int i = 0; i < triangles.size(); i++) {
             Vec3f v_one = vertices[triangles[i].x()];
@@ -80,7 +80,6 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
         }
     }
     
-    // TODO: 4b) weight normals by angle if weightByAngle is true
     for (auto &normal : normals) {
         // the normalize() function returns a boolean which can be used if you want to check for
         // erroneous normals

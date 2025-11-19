@@ -22,8 +22,8 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
     setDefaults();
 
     // Load balloon mesh
-    balloonMesh.loadOBJ("../Modelle/ballon.obj");
-    // balloonMesh.loadLSA("../Modelle/ballon.lsa");
+    // balloonMesh.loadOBJ("../Modelle/ballon.obj");
+    balloonMesh.loadLSA("../Modelle/ballon.lsa");
 
     brachMesh.loadOBJ("../Modelle/brach.obj");
     // brachMesh.loadLSA("../Modelle/brach.lsa");
@@ -33,6 +33,8 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
 
     // Load the sphere of the light
     sphereMesh.loadOBJ("../Modelle/sphere.obj");
+
+    meshes = { &balloonMesh, &brachMesh, &delphinMesh, &fordMesh };
 
     connect(&fpsCounterTimer, &QTimer::timeout, this, &OpenGLView::refreshFpsCounter);
     fpsCounterTimer.setInterval(1000);
@@ -123,11 +125,10 @@ void OpenGLView::paintGL()
     // render all meshes white for now 
     f->glColor3f(1.f, 1.f, 1.f);
 
-    list<TriangleMesh> meshes = {balloonMesh, brachMesh, delphinMesh, fordMesh};
     float x = 0, y = 0;
     int n = 1;
     for (int i = 0; i < n; i++)
-    for (TriangleMesh mesh : meshes) {
+    for (TriangleMesh* mesh : meshes) {
         f->glPushMatrix();
         // affine transformations must be outside glBegin immediate mode
         // f->glRotatef(180, 0.0f, 1.0f, 0.0f);
@@ -135,7 +136,7 @@ void OpenGLView::paintGL()
         x += 4.f;
         y += 4.f;
         // f->glScalef(2.0f, 2.0f, 2.0f);
-        mesh.draw(f);
+        mesh->draw(f);
         f->glPopMatrix();
     }
 
@@ -188,11 +189,11 @@ void OpenGLView::moveLight()
 
 unsigned int OpenGLView::getTriangleCount(int n) const
 {
-    return n * (balloonMesh.getTriangles().size() + 
-        brachMesh.getTriangles().size() + 
-        delphinMesh.getTriangles().size() + 
-        fordMesh.getTriangles().size() + 
-        sphereMesh.getTriangles().size());
+    int count = 0;
+    for (TriangleMesh* mesh: meshes)
+        count += mesh->getTriangles().size();
+
+    return n * count + sphereMesh.getTriangles().size();
 }
 
 void OpenGLView::setDefaults()
@@ -215,7 +216,8 @@ void OpenGLView::refreshFpsCounter()
 
 void OpenGLView::recalcNormals(bool weightByAngle)
 {
-    balloonMesh.calculateNormals(weightByAngle);
+    for (TriangleMesh* mesh : meshes)
+        mesh->calculateNormals(weightByAngle);
     update();
 }
 

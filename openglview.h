@@ -61,6 +61,7 @@ private:
     TriangleMesh fordMesh;
     TriangleMesh delphinMesh;
     TriangleMesh sphereMesh;
+    list<TriangleMesh *> meshes;
 
     // FPS counter, needed for FPS calculation
     unsigned int frameCounter = 0;
