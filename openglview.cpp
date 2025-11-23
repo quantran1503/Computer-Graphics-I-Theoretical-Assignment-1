@@ -22,8 +22,8 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
     setDefaults();
 
     // Load balloon mesh
-    // balloonMesh.loadOBJ("../Modelle/ballon.obj");
-    balloonMesh.loadLSA("../Modelle/ballon.lsa");
+    balloonMesh.loadOBJ("../Modelle/ballon.obj");
+    // balloonMesh.loadLSA("../Modelle/ballon.lsa");
 
     brachMesh.loadOBJ("../Modelle/brach.obj");
     // brachMesh.loadLSA("../Modelle/brach.lsa");
@@ -175,8 +175,8 @@ void OpenGLView::drawLight()
     f->glPushMatrix();
 
     f->glTranslatef(lp[0], lp[1], lp[2]);
-    // f->glScalef(0.3f, 0.3f, 0.3f);
-    f->glScalef(2.f, 2.f, 2.f);
+    f->glScalef(0.6f, 0.6f, 0.6f);
+    // f->glScalef(2.f, 2.f, 2.f);
     f->glColor3f(1, 1, 0);
     sphereMesh.draw(f);
     f->glPopMatrix();
