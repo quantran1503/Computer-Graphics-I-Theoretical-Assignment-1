@@ -44,17 +44,21 @@ void TriangleMesh::calculateNormals(bool weightByAngle)
 
         // 4b) weight normals by angle if weightByAngle is true
         } else {
-            float dot_one = e_one * e_two;
-            float dot_two = e_two * e_three;
-            float dot_three = e_one * e_three;
+            Vec3f e_one_norm = e_one.normalized();
+            Vec3f e_two_norm = e_two.normalized();
+            Vec3f e_three_norm = e_three.normalized();
+
+            float dot_one = e_one_norm * e_two_norm;
+            float dot_two = e_two_norm * e_three_norm;
+            float dot_three = e_one_norm * e_three_norm;
 
             float angle_one = acos(dot_one);
             float angle_two = acos(dot_two);
             float angle_three = acos(dot_three);
 
-            normals[triangles[i].x()] += normal * angle_three;
-            normals[triangles[i].y()] += normal * angle_one;
-            normals[triangles[i].z()] += normal * angle_two;
+            normals[triangles[i].x()] += normal * angle_one;
+            normals[triangles[i].y()] += normal * angle_two;
+            normals[triangles[i].z()] += normal * angle_three;
         }
     }
 
