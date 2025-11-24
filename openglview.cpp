@@ -21,20 +21,21 @@ OpenGLView::OpenGLView(QWidget *parent) : QOpenGLWidget(parent)
 {
     setDefaults();
 
-    // Load balloon mesh
-    balloonMesh.loadOBJ("../Modelle/ballon.obj");
-    // balloonMesh.loadLSA("../Modelle/ballon.lsa");
-
-    brachMesh.loadOBJ("../Modelle/brach.obj");
-    // brachMesh.loadLSA("../Modelle/brach.lsa");
-    fordMesh.loadOBJ("../Modelle/83ford-gt90.obj");
-    // fordMesh.loadLSA("../Modelle/83ford-gt90.lsa");
-    delphinMesh.loadOBJ("../Modelle/delphin.obj");
+    // Load meshes
+    balloonMeshOBJ.loadOBJ("../Modelle/ballon.obj");
+    balloonMeshLSA.loadLSA("../Modelle/ballon.lsa");
+    brachMeshOBJ.loadOBJ("../Modelle/brach.obj");
+    brachMeshLSA.loadLSA("../Modelle/brach.lsa");
+    delphinMeshOBJ.loadOBJ("../Modelle/delphin.obj");
+    delphinMeshLSA.loadLSA("../Modelle/delphin.lsa");
+    fordMeshOBJ.loadOBJ("../Modelle/83ford-gt90.obj");
+    fordMeshLSA.loadLSA("../Modelle/83ford-gt90.lsa");
 
     // Load the sphere of the light
     sphereMesh.loadOBJ("../Modelle/sphere.obj");
 
-    meshes = { &balloonMesh, &brachMesh, &delphinMesh, &fordMesh };
+    meshes = { &balloonMeshOBJ, &brachMeshOBJ, &delphinMeshOBJ, &fordMeshOBJ,
+               &balloonMeshLSA, &brachMeshLSA, &delphinMeshLSA, &fordMeshLSA };
 
     connect(&fpsCounterTimer, &QTimer::timeout, this, &OpenGLView::refreshFpsCounter);
     fpsCounterTimer.setInterval(1000);
@@ -125,19 +126,27 @@ void OpenGLView::paintGL()
     // render all meshes white for now 
     f->glColor3f(1.f, 1.f, 1.f);
 
-    float x = 0, y = 0;
+    float x = 0, y = 0, factor = 4;
     int n = 1;
-    for (int i = 0; i < n; i++)
-    for (TriangleMesh* mesh : meshes) {
-        f->glPushMatrix();
-        // affine transformations must be outside glBegin immediate mode
-        // f->glRotatef(180, 0.0f, 1.0f, 0.0f);
-        f->glTranslatef(x, y, 0);
-        x += 4.f;
-        y += 4.f;
-        // f->glScalef(2.0f, 2.0f, 2.0f);
-        mesh->draw(f);
-        f->glPopMatrix();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < meshes.size(); j++) {
+            f->glPushMatrix();
+            // affine transformations must be outside glBegin immediate mode
+
+            // reset x and y positions for LSA meshes so that these meshes have the same x, y positions as OBJ meshes
+            if (j == meshes.size() / 2) {
+                x -= meshes.size() / 2 * factor;
+                y -= meshes.size() / 2 * factor;
+            }
+
+            f->glTranslatef(x, y, 0);
+            x += factor;
+            y += factor;
+
+            // f->glScalef(2.0f, 2.0f, 2.0f);
+            meshes[j]->draw(f);
+            f->glPopMatrix();
+        }
     }
 
     ++frameCounter;

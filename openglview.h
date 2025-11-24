@@ -56,12 +56,12 @@ private:
     float lightMotionSpeed;
 
     // rendered objects
-    TriangleMesh balloonMesh;
-    TriangleMesh brachMesh;
-    TriangleMesh fordMesh;
-    TriangleMesh delphinMesh;
+    TriangleMesh balloonMeshOBJ, balloonMeshLSA;
+    TriangleMesh brachMeshOBJ, brachMeshLSA;
+    TriangleMesh fordMeshOBJ, fordMeshLSA;
+    TriangleMesh delphinMeshOBJ, delphinMeshLSA;
     TriangleMesh sphereMesh;
-    list<TriangleMesh *> meshes;
+    vector<TriangleMesh*> meshes;
 
     // FPS counter, needed for FPS calculation
     unsigned int frameCounter = 0;
