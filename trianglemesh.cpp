@@ -172,7 +172,6 @@ void TriangleMesh::loadLSA(const char *filename)
 
     // calculate normals
     calculateNormals();
-    flipNormals();
 }
 
 

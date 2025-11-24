@@ -126,29 +126,9 @@ void OpenGLView::paintGL()
     // render all meshes white for now 
     f->glColor3f(1.f, 1.f, 1.f);
 
-    float x = 0, y = 0, factor = 4;
     int n = 1;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < meshes.size(); j++) {
-            f->glPushMatrix();
-            // affine transformations must be outside glBegin immediate mode
-
-            // reset x and y positions for LSA meshes so that these meshes have the same x, y positions as OBJ meshes
-            if (j == meshes.size() / 2) {
-                x -= meshes.size() / 2 * factor;
-                y -= meshes.size() / 2 * factor;
-            }
-
-            f->glTranslatef(x, y, 0);
-            x += factor;
-            y += factor;
-
-            // f->glScalef(2.0f, 2.0f, 2.0f);
-            meshes[j]->draw(f);
-            f->glPopMatrix();
-        }
-    }
-
+    drawMeshes(n);
+    
     ++frameCounter;
     update();
 
@@ -194,6 +174,39 @@ void OpenGLView::drawLight()
 void OpenGLView::moveLight()
 {
     lightPos.rotY(lightMotionSpeed * (deltaTimer.restart() / 1000.f));
+}
+
+void OpenGLView::drawMeshes(int n)
+{
+    float x = 0, y = 0, factor = 4;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < meshes.size(); j++) {
+            f->glPushMatrix();
+            // affine transformations must be outside glBegin immediate mode
+
+            // reset x and y positions for LSA meshes so that these meshes have the same x, y
+            // positions as OBJ meshes
+            if (j == meshes.size() / 2) {
+                x -= meshes.size() / 2 * factor;
+                y -= meshes.size() / 2 * factor;
+            }
+
+            f->glTranslatef(x, y, 0);
+            x += factor;
+            y += factor;
+
+            if (meshes[j] == &fordMeshOBJ) {
+                f->glRotatef(-90, 1.0f, 0.0f, 0.0f);
+            } else if (meshes[j] == &fordMeshLSA) {
+                f->glRotatef(90, 1.0f, 0.0f, 0.0f);
+            }
+
+            // f->glScalef(2.0f, 2.0f, 2.0f);
+            meshes[j]->draw(f);
+            f->glPopMatrix();
+        }
+    }
 }
 
 unsigned int OpenGLView::getTriangleCount(int n) const

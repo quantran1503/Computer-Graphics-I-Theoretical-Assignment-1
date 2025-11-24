@@ -76,6 +76,7 @@ private:
     void drawCS();
     void drawLight();
     void moveLight();
+    void drawMeshes(int n);
     unsigned int getTriangleCount(int n) const;
 };
 
