@@ -238,9 +238,20 @@ void OpenGLView::refreshFpsCounter()
 
 void OpenGLView::recalcNormals(bool weightByAngle)
 {
-    for (TriangleMesh* mesh : meshes)
+    for (int i = 0; i < meshes.size(); i++) {
+        TriangleMesh *mesh = meshes[i];
+
         mesh->calculateNormals(weightByAngle);
+        if (meshes[i] == &fordMeshLSA 
+            || meshes[i] == &balloonMeshLSA 
+            || meshes[i] == &brachMeshLSA
+            || meshes[i] == &delphinMeshLSA) 
+        {
+            meshes[i]->flipNormals();
+        }
+    }
     update();
+
 }
 
 void OpenGLView::triggerLightMovement(bool shouldMove)
